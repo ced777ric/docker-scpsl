@@ -1,5 +1,5 @@
-FROM ubuntu:20.04
-LABEL maintainer="Parkeymon"
+FROM ubuntu:22.04
+LABEL maintainer="Parkeymon, EsserGaming"
 USER root
 RUN echo "Building.."
 RUN apt-get update
@@ -9,21 +9,17 @@ RUN echo "deb https://download.mono-project.com/repo/ubuntu stable-focal main" |
 RUN apt-get update
 ENV DEBIAN_FRONTEND=noninteractive
 
+
 RUN apt-get update
 RUN apt-get install -y ffmpeg
 RUN ffmpeg -version
 RUN apt-get install -y curl
 RUN apt-get install -y wget
-RUN apt-get install -y lib32gcc1
-RUN apt-get update
-RUN curl -fsSL https://deb.nodesource.com/setup_15.x | bash -
-RUN apt-get install -y nodejs
-RUN npm -v
-RUN npm install -g npm
-RUN apt-get update
+RUN wget https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
+RUN dpkg -i packages-microsoft-prod.deb
+RUN rm packages-microsoft-prod.deb
+RUN apt-get update && apt-get install -y aspnetcore-runtime-8.0 aspnetcore-runtime-9.0
 RUN dpkg --add-architecture i386
-RUN apt-get update
-RUN npm install --global yarn
 RUN apt-get update
 RUN apt-get install -y mono-complete
 RUN adduser --home /home/container container --disabled-password --gecos "" --uid 999
